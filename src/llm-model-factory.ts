@@ -15,6 +15,14 @@ class LlmModelFactory implements LlmModelFactoryI {
 
   private readonly openaiBaseURL: string;
 
+  private readonly azureOpenaiEndpoint: string;
+
+  private readonly azureOpenaiDeployment: string;
+
+  private readonly azureOpenaiApiVersion: string;
+
+  private readonly azureOpenaiApiKey: string;
+
   private readonly anthropicBaseURL: string;
 
   private readonly anthropicApiKey: string;
@@ -42,6 +50,10 @@ class LlmModelFactory implements LlmModelFactoryI {
     openaiApiKey: string,
     openaiModel: string,
     openaiBaseURL: string,
+    azureOpenaiEndpoint: string,
+    azureOpenaiDeployment: string,
+    azureOpenaiApiVersion: string,
+    azureOpenaiApiKey: string,
     anthropicBaseURL: string,
     anthropicApiKey: string,
     anthropicModel: string,
@@ -58,6 +70,10 @@ class LlmModelFactory implements LlmModelFactoryI {
     this.openaiApiKey = openaiApiKey;
     this.openaiModel = openaiModel;
     this.openaiBaseURL = openaiBaseURL;
+    this.azureOpenaiEndpoint = azureOpenaiEndpoint;
+    this.azureOpenaiDeployment = azureOpenaiDeployment;
+    this.azureOpenaiApiVersion = azureOpenaiApiVersion;
+    this.azureOpenaiApiKey = azureOpenaiApiKey;
     this.anthropicBaseURL = anthropicBaseURL;
     this.anthropicApiKey = anthropicApiKey;
     this.anthropicModel = anthropicModel;
@@ -80,6 +96,15 @@ class LlmModelFactory implements LlmModelFactoryI {
           apiKey: this.openaiApiKey,
         });
         return openai(this.openaiModel);
+      }
+      case 'azure-openai': {
+        const baseURL = `${this.azureOpenaiEndpoint}/openai/deployments/${this.azureOpenaiDeployment}`
+          + `?api-version=${this.azureOpenaiApiVersion}`;
+        const azureOpenai = createOpenAI({
+          baseURL,
+          apiKey: this.azureOpenaiApiKey,
+        });
+        return azureOpenai(this.openaiModel);
       }
       case 'anthropic': {
         const anthropic = createAnthropic({

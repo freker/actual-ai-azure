@@ -9,6 +9,10 @@ export const PROVIDER_LIMITS: Record<string, ProviderLimits> = {
     tokensPerMinute: 60000,
     requestsPerMinute: 500,
   },
+  'azure-openai': {
+    tokensPerMinute: 60000,
+    requestsPerMinute: 500,
+  },
   anthropic: {
     tokensPerMinute: 100000,
     requestsPerMinute: 400,

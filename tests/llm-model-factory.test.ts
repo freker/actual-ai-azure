@@ -7,6 +7,10 @@ describe('LlmModelFactory', () => {
       'openai-api-key',
       'openai-model',
       'https://api.openai.com',
+      'https://my-azure-endpoint',
+      'my-deployment',
+      '2024-02-01',
+      'azure-api-key',
       'https://api.anthropic.com',
       'anthropic-api-key',
       'anthropic-model',
@@ -24,6 +28,13 @@ describe('LlmModelFactory', () => {
   it('should create an OpenAI model', () => {
     const sut = createSut('openai');
     const model = sut.create();
+    expect(model.provider).toEqual('openai.chat');
+  });
+
+  it('should create an Azure OpenAI model', () => {
+    const sut = createSut('azure-openai');
+    const model = sut.create();
+    expect(model).toBeDefined();
     expect(model.provider).toEqual('openai.chat');
   });
 
