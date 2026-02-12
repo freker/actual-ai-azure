@@ -1,5 +1,6 @@
 import { LanguageModel } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
+import { createAzure } from '@ai-sdk/azure';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createOllama } from 'ollama-ai-provider';
@@ -98,13 +99,19 @@ class LlmModelFactory implements LlmModelFactoryI {
         return openai(this.openaiModel);
       }
       case 'azure-openai': {
-        const baseURL = `${this.azureOpenaiEndpoint}/openai/deployments/${this.azureOpenaiDeployment}`
-          + `?api-version=${this.azureOpenaiApiVersion}`;
-        const azureOpenai = createOpenAI({
-          baseURL,
+        // resourceName can be extracted from the endpoint or passed directly if we parsed it.
+        // The endpoint is typically https://{resourceName}.openai.azure.com/
+        const resourceName = this.azureOpenaiEndpoint
+          .replace(/^https?:\/\//, '')
+          .replace(/\.openai\.azure\.com\/?$/, '');
+
+        const azure = createAzure({
+          resourceName,
           apiKey: this.azureOpenaiApiKey,
+          apiVersion: this.azureOpenaiApiVersion,
         });
-        return azureOpenai(this.openaiModel);
+
+        return azure(this.azureOpenaiDeployment) as unknown as LanguageModel;
       }
       case 'anthropic': {
         const anthropic = createAnthropic({

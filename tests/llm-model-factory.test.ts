@@ -35,7 +35,7 @@ describe('LlmModelFactory', () => {
     const sut = createSut('azure-openai');
     const model = sut.create();
     expect(model).toBeDefined();
-    expect(model.provider).toEqual('openai.chat');
+    expect(model.provider).toEqual('azure.responses');
   });
 
   it('should create an Anthropic model', () => {
