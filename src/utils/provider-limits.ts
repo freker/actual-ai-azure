@@ -10,8 +10,8 @@ export const PROVIDER_LIMITS: Record<string, ProviderLimits> = {
     requestsPerMinute: 500,
   },
   'azure-openai': {
-    tokensPerMinute: 60000,
-    requestsPerMinute: 500,
+    tokensPerMinute: 4500, // S0 tier limit with safety margin
+    requestsPerMinute: 6,  // Conservative rate for S0 tier
   },
   anthropic: {
     tokensPerMinute: 100000,

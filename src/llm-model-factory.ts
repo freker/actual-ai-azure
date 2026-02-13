@@ -99,19 +99,19 @@ class LlmModelFactory implements LlmModelFactoryI {
         return openai(this.openaiModel);
       }
       case 'azure-openai': {
-        const resourceName = this.azureOpenaiEndpoint
-          .replace(/^https?:\/\//, '')
-          .replace(/\.openai\.azure\.com\/?$/, '');
+        console.log(`Azure OpenAI: ${this.azureOpenaiEndpoint}, deployment: ${this.azureOpenaiDeployment}`);
 
-        console.log(`Azure OpenAI: ${resourceName}, deployment: ${this.azureOpenaiDeployment}`);
-
-        const azure = createAzure({
-          resourceName: resourceName,
+        // Use OpenAI provider with Azure Responses API endpoint (no api-version parameter)
+        const azureBaseUrl = `${this.azureOpenaiEndpoint}/openai/v1`;
+        const openai = createOpenAI({
+          baseURL: azureBaseUrl,
           apiKey: this.azureOpenaiApiKey,
-          apiVersion: this.azureOpenaiApiVersion,
+          headers: {
+            'api-key': this.azureOpenaiApiKey,
+          },
         });
 
-        return azure(this.azureOpenaiDeployment) as unknown as LanguageModel;
+        return openai(this.azureOpenaiDeployment) as unknown as LanguageModel;
       }
       case 'anthropic': {
         const anthropic = createAnthropic({

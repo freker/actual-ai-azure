@@ -129,7 +129,7 @@ const transactionProcessor = new TransactionProcessor(
 
 const batchTransactionProcessor = new BatchTransactionProcessor(
   transactionProcessor,
-  20,
+  10, // Reduced batch size for S0 tier rate limits
 );
 
 const transactionFilterer = new TransactionFilterer(tagService);

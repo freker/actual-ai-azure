@@ -62,11 +62,11 @@ class BatchTransactionProcessor {
         );
       }, Promise.resolve());
 
-      // Add a small delay between batches to avoid overwhelming the API
+      // Add a delay between batches to avoid overwhelming the API
       if (batchEnd < uncategorizedTransactions.length) {
-        console.log('Pausing for 2 seconds before next batch...');
+        console.log('Pausing for 5 seconds before next batch...');
         await new Promise((resolve) => {
-          setTimeout(resolve, 2000);
+          setTimeout(resolve, 5000);
         });
       }
     }

@@ -5,7 +5,7 @@ import type {
   ActualApiServiceI,
   TransactionServiceI,
 } from './types';
-import { isFeatureEnabled } from './config';
+import { isFeatureEnabled, maxTransactionsToProcess } from './config';
 import CategorySuggester from './transaction/category-suggester';
 import BatchTransactionProcessor from './transaction/batch-transaction-processor';
 import TransactionFilterer from './transaction/transaction-filterer';
@@ -53,7 +53,7 @@ class TransactionService implements TransactionServiceI {
     console.log(`Found ${rules.length} transaction categorization rules`);
     console.log('rerunMissedTransactions', isFeatureEnabled('rerunMissedTransactions'));
 
-    const uncategorizedTransactions = this.transactionFilterer.filterUncategorized(
+    let uncategorizedTransactions = this.transactionFilterer.filterUncategorized(
       transactions,
       accounts,
     );
@@ -61,6 +61,12 @@ class TransactionService implements TransactionServiceI {
     if (uncategorizedTransactions.length === 0) {
       console.log('No uncategorized transactions to process');
       return;
+    }
+
+    // Limit number of transactions if MAX_TRANSACTIONS_TO_PROCESS is set
+    if (maxTransactionsToProcess && maxTransactionsToProcess > 0) {
+      console.log(`Limiting processing to ${maxTransactionsToProcess} transactions (MAX_TRANSACTIONS_TO_PROCESS is set)`);
+      uncategorizedTransactions = uncategorizedTransactions.slice(0, maxTransactionsToProcess);
     }
 
     // Track suggested new categories
