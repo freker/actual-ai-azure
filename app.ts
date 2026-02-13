@@ -16,8 +16,10 @@ if (cron.validate(cronSchedule)) {
 console.log('Application started');
 if (isFeatureEnabled('classifyOnStartup')) {
   (async () => {
+    // Allow Actual server time to initialize
+    await new Promise(resolve => setTimeout(resolve, 5000));
     await actualAi.classify();
   })();
 } else {
-  console.log('Application started, waiting for cron schedule:', cronSchedule);
+  console.log('Waiting for cron schedule:', cronSchedule);
 }

@@ -99,14 +99,14 @@ class LlmModelFactory implements LlmModelFactoryI {
         return openai(this.openaiModel);
       }
       case 'azure-openai': {
-        // resourceName can be extracted from the endpoint or passed directly if we parsed it.
-        // The endpoint is typically https://{resourceName}.openai.azure.com/
         const resourceName = this.azureOpenaiEndpoint
           .replace(/^https?:\/\//, '')
           .replace(/\.openai\.azure\.com\/?$/, '');
 
+        console.log(`Azure OpenAI: ${resourceName}, deployment: ${this.azureOpenaiDeployment}`);
+
         const azure = createAzure({
-          resourceName,
+          resourceName: resourceName,
           apiKey: this.azureOpenaiApiKey,
           apiVersion: this.azureOpenaiApiVersion,
         });

@@ -49,6 +49,20 @@ class ActualApiService implements ActualApiServiceI {
       this.fs.mkdirSync(this.dataDir);
     }
 
+    // Configure fetch to accept self-signed certificates
+    if (this.serverURL.startsWith('https://')) {
+      const https = require('https');
+      const agent = new https.Agent({ rejectUnauthorized: false });
+      const originalFetch = global.fetch;
+      
+      global.fetch = async (url: any, options: any = {}) => {
+        if (typeof url === 'string' && url.startsWith('https://')) {
+          options.agent = agent;
+        }
+        return originalFetch(url, options);
+      };
+    }
+
     await this.actualApiClient.init({
       dataDir: this.dataDir,
       serverURL: this.serverURL,
