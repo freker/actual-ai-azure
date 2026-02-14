@@ -34,6 +34,9 @@ export const groqApiKey = process.env.GROQ_API_KEY ?? '';
 export const groqModel = process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile';
 export const groqBaseURL = process.env.GROQ_BASE_URL ?? 'https://api.groq.com/openai/v1';
 export const valueSerpApiKey = process.env.VALUESERP_API_KEY ?? '';
+export const httpPort = process.env.HTTP_PORT 
+  ? parseInt(process.env.HTTP_PORT, 10) 
+  : 3000;
 export const maxTransactionsToProcess = process.env.MAX_TRANSACTIONS_TO_PROCESS 
   ? parseInt(process.env.MAX_TRANSACTIONS_TO_PROCESS, 10) 
   : undefined;
