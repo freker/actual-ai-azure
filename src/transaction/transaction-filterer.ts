@@ -38,12 +38,11 @@ class TransactionFilterer {
     let filteredTransactions = transactions;
 
     // Apply filters one by one
-    // TEMPORARY: Comment out to reprocess all transactions
-    // filteredTransactions = this.applyFilter(
-    //   filteredTransactions,
-    //   (transaction) => !transaction.category,
-    //   'Already has a category',
-    // );
+    filteredTransactions = this.applyFilter(
+      filteredTransactions,
+      (transaction) => !transaction.category,
+      'Already has a category',
+    );
 
     filteredTransactions = this.applyFilter(
       filteredTransactions,
