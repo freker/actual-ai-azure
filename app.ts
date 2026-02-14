@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cron from 'node-cron';
 import { cronSchedule, isFeatureEnabled, httpPort } from './src/config';
 import actualAi from './src/container';
@@ -12,7 +12,7 @@ if (!isFeatureEnabled('classifyOnStartup') && !cron.validate(cronSchedule)) {
 const app = express();
 let isProcessing = false;
 
-app.post('/classify', async (req, res) => {
+app.post('/classify', async (req: Request, res: Response) => {
   if (isProcessing) {
     return res.status(429).json({ error: 'Classification already in progress' });
   }
@@ -34,7 +34,7 @@ app.post('/classify', async (req, res) => {
   }
 });
 
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', processing: isProcessing });
 });
 

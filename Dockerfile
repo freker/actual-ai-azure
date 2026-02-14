@@ -2,6 +2,7 @@ FROM node:22.21-alpine3.22
 
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
+ARG CACHEBUST=1
 
 # Install build dependencies for native modules
 RUN apk add --no-cache python3 make g++
